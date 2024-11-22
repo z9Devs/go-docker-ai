@@ -9,7 +9,7 @@ func NewBaseCommand() *cobra.Command {
 		Short: "Dockerfile lint related commands",
 	}
 
-	//cmd.AddCommand()
+	cmd.AddCommand(NewCheckDockerfile())
 
 	return cmd
 }
