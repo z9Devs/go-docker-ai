@@ -6,19 +6,18 @@ import (
 )
 
 type Configuration struct {
-    OpenApiKey          string `env:"OPENAI_API_KEY" envDefault:"info"`
-	LogLevel            string `env:"LOG_LEVEL" envDefault:"info"`
+	OpenAIAPIKey      string `env:"OPENAI_API_KEY" envDefault:""` 
+	LogLevel          string `env:"LOG_LEVEL" envDefault:"info"` 
+	BestPracticesURL  string `env:"BEST_PRACTICES_URL" envDefault:"https://github.com/docker/docs/blob/main/content/manuals/build/building/best-practices.md"`
 }
 
 func NewConfiguration() *Configuration {
+
 	err := godotenv.Load()
 	if err != nil {
-		panic(err)
 	}
 
-	configuration := Configuration{
-		LogLevel: "info",
-	}
+	configuration := Configuration{}
 
 	if err := env.Parse(&configuration); err != nil {
 		panic(err)
