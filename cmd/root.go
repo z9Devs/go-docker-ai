@@ -1,9 +1,8 @@
 package cmd
 
 import (
+	"github.com/la-plas-growth/GO-DockerLint-AI/cmd/command/lint"
 	"github.com/spf13/cobra"
-
-	"github.com/la-plas-growth/GO-DockerLint-AI/command/lint"
 )
 
 func NewRootCommand() *cobra.Command {
@@ -11,7 +10,7 @@ func NewRootCommand() *cobra.Command {
 		Use:   "tool",
 		Short: "Tool is a CLI application for lint.",
 	}
-	rootCmd.AddCommand(lint.NewBaseCommand)
+	rootCmd.AddCommand(lint.NewBaseCommand())
 	return rootCmd
 }
 
