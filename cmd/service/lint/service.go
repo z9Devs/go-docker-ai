@@ -57,15 +57,15 @@ func (s *service) AnalyzeDockerFile(dockerfile string) (*LintResponse, error) {
 
 	// Construct the prompt for OpenAI
 	prompt := fmt.Sprintf(`You are a Dockerfile linter. Use the following best practices as guidance:
-%s
+	%s
 
-Analyze the Dockerfile below. For each issue, provide:
-- Line number(s)
-- Severity (info, warning, error)
-- Description
+	Analyze the Dockerfile below. For each issue, provide:
+	- Line number(s)
+	- Severity (info, warning, error)
+	- Description
 
-Dockerfile:
-%s`, cleanedBestPractices, dockerfile)
+	Dockerfile:
+	%s`, cleanedBestPractices, dockerfile)
 
 	// Call OpenAI API
 	resp, err := s.client.CreateChatCompletion(ctx, openai.ChatCompletionRequest{
