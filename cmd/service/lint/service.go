@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/go-resty/resty/v2"
 	"github.com/la-plas-growth/GO-DockerLint-AI/env"
 	"github.com/sashabaranov/go-openai"
 	"go.uber.org/zap"
@@ -14,6 +15,7 @@ import (
 // IService defines the interface for the linting service
 type IService interface {
 	AnalyzeDockerFile(dockerfile string) (*LintResponse, error)
+	FetchBestPracticesMarkdown() (string, error)
 }
 
 // service implements the IService interface
@@ -21,6 +23,7 @@ type service struct {
 	configuration *env.Configuration
 	logger        *zap.SugaredLogger
 	client        *openai.Client
+	restyClient   *resty.Client
 }
 
 // NewService creates a new instance of the linting service
@@ -30,6 +33,7 @@ func NewService(configuration *env.Configuration, logger *zap.SugaredLogger) ISe
 		configuration: configuration,
 		logger:        logger,
 		client:        client,
+		restyClient:   resty.New(),
 	}
 }
 
@@ -107,4 +111,49 @@ Dockerfile:
 	}
 
 	return &LintResponse{Issues: issues}, nil
+}
+
+
+func (s *service) FetchBestPracticesMarkdown() (string, error) {
+	logger.Debugf("Fetching best practices from URL: %s", s.configuration.BestPracticesURL)
+
+	resp, err := s.restyClient.R().
+		Get(s.configuration.BestPracticesURL)
+	//
+	if err != nil {
+		logger.Errorf("Unexpected status code: %d", resp.StatusCode)
+		return "", fmt.Errorf("unexpected status code: %d", resp.StatusCode)
+	}
+	if resp.IsError() {
+		return nil, fmt.Errorf("resp %s", result.String())
+	}
+	
+	// Analizza il contenuto Markdown
+	content := string(body)
+	var sections []string
+	lines := strings.Split(content, "\n")
+
+	for _, line := range lines {
+		line = strings.TrimSpace(line)
+		// Identifica i titoli principali
+		if strings.HasPrefix(line, "#") {
+			sections = append(sections, "\n"+line) // Aggiunge una nuova sezione
+		} else if len(line) > 0 {
+			// Aggiunge paragrafi o contenuti sotto il titolo
+			if len(sections) > 0 {
+				sections[len(sections)-1] += "\n" + line
+			}
+		}
+	}
+
+	if len(sections) == 0 {
+		s.logger.Warn("No relevant content found in the Markdown file.")
+		return "", fmt.Errorf("no relevant content found")
+	}
+
+	// Combina le sezioni in un risultato leggibile
+	result := strings.Join(sections, "\n\n")
+	s.logger.Info("Best practices fetched successfully.")
+	return result, nil
+
 }
