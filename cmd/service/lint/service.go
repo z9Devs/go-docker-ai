@@ -8,6 +8,7 @@ import (
 
 	"github.com/anaskhan96/soup"
 	"github.com/la-plas-growth/GO-DockerLint-AI/env"
+	"github.com/la-plas-growth/GO-DockerLint-AI/lib"
 	"github.com/sashabaranov/go-openai"
 	"go.uber.org/zap"
 )
@@ -40,8 +41,16 @@ func NewService(configuration *env.Configuration, logger *zap.SugaredLogger) ISe
 
 // AnalyzeDockerFile analyzes a Dockerfile using OpenAI and best practices
 func (s *service) AnalyzeDockerFile(dockerfile string) (*LintResponse, error) {
-	s.logger.Debugf("Analyzing Dockerfile with OpenAI: %s", dockerfile)
-
+	s.logger.Debugf("Analyzing Dockerfile with OpenAI dockerfile path: %s", dockerfile)
+	content, err := lib.GetFileContent(dockerfile)
+	if err != nil {
+		s.logger.Errorf("Failed to read Dockerfile: %v", err)
+		return nil, err
+	}
+	if content == "" {
+		s.logger.Errorf("Dockerfile is empty")
+		return nil, fmt.Errorf("dockerfile is empty")
+	}
 	// Fetch best practices content
 	bestPractices, err := s.FetchBestPracticesMarkdown()
 	if err != nil {
@@ -65,7 +74,7 @@ func (s *service) AnalyzeDockerFile(dockerfile string) (*LintResponse, error) {
 	- Description
 
 	Dockerfile:
-	%s`, cleanedBestPractices, dockerfile)
+	%s`, cleanedBestPractices, content)
 
 	s.logger.Debugf("prompt: %s", prompt)
 
