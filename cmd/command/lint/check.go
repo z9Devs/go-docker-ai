@@ -10,7 +10,7 @@ func NewCheckDockerfile() *cobra.Command {
 	var dockerFile string
 	cmd := &cobra.Command{
 		Use:   "lint",
-		Short: "Check dockerfile for lint",
+		Short: "Check Dockerfile for lint",
 		Run: func(cmd *cobra.Command, args []string) {
 			lintService := wire.InitLint()
 			r, err := lintService.AnalyzeDockerFile(dockerFile)
@@ -22,7 +22,7 @@ func NewCheckDockerfile() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().StringVarP(&dockerFile, "lint", "l", "", "lint dockerfile")
+	cmd.Flags().StringVarP(&dockerFile, "lint", "l", "", "lint dockerfile path")
 
 	_ = cmd.MarkFlagRequired("lint")
 
