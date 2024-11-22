@@ -67,9 +67,11 @@ func (s *service) AnalyzeDockerFile(dockerfile string) (*LintResponse, error) {
 	Dockerfile:
 	%s`, cleanedBestPractices, dockerfile)
 
+	s.logger.Debugf("prompt: %s", prompt)
+
 	// Call OpenAI API
 	resp, err := s.client.CreateChatCompletion(ctx, openai.ChatCompletionRequest{
-		Model: "gpt-4",
+		Model: "gpt-4o-mini",
 		Messages: []openai.ChatCompletionMessage{
 			{
 				Role:    "system",
