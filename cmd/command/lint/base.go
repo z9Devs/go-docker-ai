@@ -1,6 +1,5 @@
 package lint
 
-
 import "github.com/spf13/cobra"
 
 func NewBaseCommand() *cobra.Command {
@@ -9,7 +8,7 @@ func NewBaseCommand() *cobra.Command {
 		Short: "Dockerfile lint related commands",
 	}
 
-	//cmd.AddCommand()
+	cmd.AddCommand(NewCheckDockerfile())
 
 	return cmd
 }
