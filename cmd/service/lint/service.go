@@ -124,5 +124,5 @@ func (s *service) FetchBestPracticesMarkdown() (string, error) {
 	}
 	doc := soup.HTMLParse(resp)
 	//
-	return doc.Text(), nil
+	return doc.FullText(), nil
 }

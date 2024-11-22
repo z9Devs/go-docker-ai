@@ -1,3 +1,3 @@
 #!/bin/bash
 
-./Go-DockerLint-Ai dockerlint lint -l Dockerfile          
+./Go-DockerLint-Ai dockerlint -f Dockerfile          
