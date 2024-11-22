@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/anaskhan96/soup"
 	"github.com/la-plas-growth/GO-DockerLint-AI/env"
 	"github.com/sashabaranov/go-openai"
 	"go.uber.org/zap"
@@ -14,6 +15,7 @@ import (
 // IService defines the interface for the linting service
 type IService interface {
 	AnalyzeDockerFile(dockerfile string) (*LintResponse, error)
+	FetchBestPracticesMarkdown() (string, error)
 }
 
 // service implements the IService interface
@@ -25,6 +27,9 @@ type service struct {
 
 // NewService creates a new instance of the linting service
 func NewService(configuration *env.Configuration, logger *zap.SugaredLogger) IService {
+	if configuration.OpenAIAPIKey == "" {
+		logger.Panic("OpenAI API key is required")
+	}
 	client := openai.NewClient(configuration.OpenAIAPIKey)
 	return &service{
 		configuration: configuration,
@@ -38,7 +43,7 @@ func (s *service) AnalyzeDockerFile(dockerfile string) (*LintResponse, error) {
 	s.logger.Debugf("Analyzing Dockerfile with OpenAI: %s", dockerfile)
 
 	// Fetch best practices content
-	bestPractices, err := FetchBestPracticesMarkdown(s.configuration.BestPracticesURL, s.logger)
+	bestPractices, err := s.FetchBestPracticesMarkdown()
 	if err != nil {
 		s.logger.Errorf("Failed to fetch best practices: %v", err)
 		return nil, err
@@ -52,15 +57,15 @@ func (s *service) AnalyzeDockerFile(dockerfile string) (*LintResponse, error) {
 
 	// Construct the prompt for OpenAI
 	prompt := fmt.Sprintf(`You are a Dockerfile linter. Use the following best practices as guidance:
-%s
+	%s
 
-Analyze the Dockerfile below. For each issue, provide:
-- Line number(s)
-- Severity (info, warning, error)
-- Description
+	Analyze the Dockerfile below. For each issue, provide:
+	- Line number(s)
+	- Severity (info, warning, error)
+	- Description
 
-Dockerfile:
-%s`, cleanedBestPractices, dockerfile)
+	Dockerfile:
+	%s`, cleanedBestPractices, dockerfile)
 
 	// Call OpenAI API
 	resp, err := s.client.CreateChatCompletion(ctx, openai.ChatCompletionRequest{
@@ -107,4 +112,17 @@ Dockerfile:
 	}
 
 	return &LintResponse{Issues: issues}, nil
+}
+
+func (s *service) FetchBestPracticesMarkdown() (string, error) {
+	s.logger.Debugf("Fetching best practices from URL: %s", s.configuration.BestPracticesURL)
+	resp, err := soup.Get(s.configuration.BestPracticesURL)
+	//
+	if err != nil {
+		s.logger.Errorf("Unexpected status code: %d", err)
+		return "", fmt.Errorf("unexpected status code: %d", err)
+	}
+	doc := soup.HTMLParse(resp)
+	//
+	return doc.FullText(), nil
 }

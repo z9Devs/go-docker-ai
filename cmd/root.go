@@ -11,6 +11,7 @@ func NewRootCommand() *cobra.Command {
 		Short: "Tool is a CLI application for lint.",
 	}
 	rootCmd.AddCommand(lint.NewBaseCommand())
+
 	return rootCmd
 }
 
