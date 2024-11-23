@@ -91,12 +91,11 @@ func (s *service) AnalyzeDockerFile(dockerfile string) (*LintResponse, error) {
 				"items": map[string]interface{}{
 					"type": "object",
 					"properties": map[string]interface{}{
-						"number_of_row": map[string]string{"type": "string"},
-						"issue":         map[string]string{"type": "string"},
-						"severity":      map[string]string{"type": "string"},
-						"advice":        map[string]string{"type": "string"},
+						"issue":    map[string]string{"type": "string"},
+						"severity": map[string]string{"type": "string"},
+						"advice":   map[string]string{"type": "string"},
 					},
-					"required":             []string{"number_of_row", "issue", "severity", "advice"},
+					"required":             []string{"issue", "severity", "advice"},
 					"additionalProperties": false,
 				},
 			},
