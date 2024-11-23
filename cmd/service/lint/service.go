@@ -62,6 +62,30 @@ func (s *service) AnalyzeDockerFile(dockerfile string) (*LintResponse, error) {
 	// Clean up best practices to format properly for the prompt
 	cleanedBestPractices := strings.ReplaceAll(bestPractices, "\n", " ")
 
+	lintResponse, err := s.analyzeWithChatGPT(cleanedBestPractices)
+	if err != nil {
+		s.logger.Errorf("Failed to analyzeWithChatGPT: %v", err)
+		return nil, err
+	}
+
+	return &lintResponse, nil
+}
+
+func (s *service) FetchBestPracticesMarkdown() (string, error) {
+	s.logger.Debugf("Fetching best practices from URL: %s", s.configuration.BestPracticesURL)
+	resp, err := soup.Get(s.configuration.BestPracticesURL)
+	//
+	if err != nil {
+		s.logger.Errorf("Unexpected status code: %d", err)
+		return "", fmt.Errorf("unexpected status code: %d", err)
+	}
+	doc := soup.HTMLParse(resp)
+	//
+	return doc.FullText(), nil
+}
+
+
+func (s *service) analyzeWithChatGPT(cleanedBestPractices string, ) (*LintResponse, error) {
 	// Create OpenAI API context
 	ctx := context.Background()
 
@@ -82,7 +106,7 @@ func (s *service) AnalyzeDockerFile(dockerfile string) (*LintResponse, error) {
 
 	s.logger.Debugf("prompt: %s", prompt)
 
-	// Define the JSON schema for the response
+	// Define the JSON schema for the response 
 	schema := map[string]interface{}{
 		"type": "object",
 		"properties": map[string]interface{}{
@@ -153,19 +177,5 @@ func (s *service) AnalyzeDockerFile(dockerfile string) (*LintResponse, error) {
 		s.logger.Errorf("Failed to parse JSON response: %v", err)
 		return nil, fmt.Errorf("invalid JSON format: %w", err)
 	}
-
 	return &lintResponse, nil
-}
-
-func (s *service) FetchBestPracticesMarkdown() (string, error) {
-	s.logger.Debugf("Fetching best practices from URL: %s", s.configuration.BestPracticesURL)
-	resp, err := soup.Get(s.configuration.BestPracticesURL)
-	//
-	if err != nil {
-		s.logger.Errorf("Unexpected status code: %d", err)
-		return "", fmt.Errorf("unexpected status code: %d", err)
-	}
-	doc := soup.HTMLParse(resp)
-	//
-	return doc.FullText(), nil
 }
