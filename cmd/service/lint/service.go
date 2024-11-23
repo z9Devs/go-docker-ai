@@ -66,14 +66,12 @@ func (s *service) AnalyzeDockerFile(dockerfile string) (*LintResponse, error) {
 	// Construct the prompt for OpenAI
 	prompt := fmt.Sprintf(`You are a Dockerfile linter. Use the following best practices as guidance:
 	%s
-	
+
 	Analyze the Dockerfile below. For each issue, provide:
 	- Line number(s)
 	- Severity (info, warning, error)
 	- Description
-	
-	Output the analysis in a tabular format using Markdown:
-	
+
 	Dockerfile:
 	%s`, cleanedBestPractices, content)
 
@@ -102,7 +100,7 @@ func (s *service) AnalyzeDockerFile(dockerfile string) (*LintResponse, error) {
 	responseContent := resp.Choices[0].Message.Content
 	s.logger.Debugf("OpenAI response: %s", responseContent)
 
-	return &LintResponse{content: responseContent}, nil
+	return &LintResponse{Content: responseContent}, nil
 }
 
 func (s *service) FetchBestPracticesMarkdown() (string, error) {

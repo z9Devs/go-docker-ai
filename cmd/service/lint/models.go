@@ -1,7 +1,7 @@
 package lint
 
 type LintResponse struct {
-	content string
+	Content string `json:"content"`
 }
 
 type Dockerfile struct {
