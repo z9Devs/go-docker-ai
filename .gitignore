@@ -25,3 +25,5 @@ go.work.sum
 .env
 
 GO-DockerLint-AI
+
+go-dockerlint-ai*
