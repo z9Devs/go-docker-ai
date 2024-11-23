@@ -67,7 +67,7 @@ sh build.sh
 Run the following command to analyze a Dockerfile:
 
 ```bash
-./go-dockerlint-ai-linux-amd64 lint /path/to/Dockerfile
+./go-dockerlint-ai-linux-amd64 dockerlint /path/to/Dockerfile
 ```
 
 Example output:
@@ -81,7 +81,7 @@ Example output:
 
 | Command             | Description                               |
 |---------------------|-------------------------------------------|
-| `lint <file>`       | Lint the specified Dockerfile.            |
+| `dockerlint <file>`       | Lint the specified Dockerfile.            |
 | `version`           | Show the tool version.                   |
 | `help`              | Display available commands.              |
 
@@ -101,7 +101,7 @@ If you want to contribute or customize the project, make sure you have Go instal
 
 3. Start the tool:
    ```bash
-   go run main.go lint /path/to/Dockerfile
+   go run main.go dockerlint /path/to/Dockerfile
    ```
 
 ## Contributing
