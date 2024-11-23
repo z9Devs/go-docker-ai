@@ -62,13 +62,13 @@ func (s *service) AnalyzeDockerFile(dockerfile string) (*LintResponse, error) {
 	// Clean up best practices to format properly for the prompt
 	cleanedBestPractices := strings.ReplaceAll(bestPractices, "\n", " ")
 
-	lintResponse, err := s.analyzeWithChatGPT(cleanedBestPractices)
+	lintResponse, err := s.analyzeWithChatGPT(cleanedBestPractices, content)
 	if err != nil {
 		s.logger.Errorf("Failed to analyzeWithChatGPT: %v", err)
 		return nil, err
 	}
 
-	return &lintResponse, nil
+	return lintResponse, nil
 }
 
 func (s *service) FetchBestPracticesMarkdown() (string, error) {
@@ -84,8 +84,7 @@ func (s *service) FetchBestPracticesMarkdown() (string, error) {
 	return doc.FullText(), nil
 }
 
-
-func (s *service) analyzeWithChatGPT(cleanedBestPractices string, ) (*LintResponse, error) {
+func (s *service) analyzeWithChatGPT(cleanedBestPractices, content string) (*LintResponse, error) {
 	// Create OpenAI API context
 	ctx := context.Background()
 
@@ -106,7 +105,7 @@ func (s *service) analyzeWithChatGPT(cleanedBestPractices string, ) (*LintRespon
 
 	s.logger.Debugf("prompt: %s", prompt)
 
-	// Define the JSON schema for the response 
+	// Define the JSON schema for the response
 	schema := map[string]interface{}{
 		"type": "object",
 		"properties": map[string]interface{}{
