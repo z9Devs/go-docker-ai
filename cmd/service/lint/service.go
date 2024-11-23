@@ -2,6 +2,7 @@ package lint
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -50,6 +51,7 @@ func (s *service) AnalyzeDockerFile(dockerfile string) (*LintResponse, error) {
 		s.logger.Errorf("Dockerfile is empty")
 		return nil, fmt.Errorf("dockerfile is empty")
 	}
+
 	// Fetch best practices content
 	bestPractices, err := s.FetchBestPracticesMarkdown()
 	if err != nil {
@@ -68,14 +70,58 @@ func (s *service) AnalyzeDockerFile(dockerfile string) (*LintResponse, error) {
 	%s
 
 	Analyze the Dockerfile below. For each issue, provide:
-	- Line number(s)
-	- Severity (info, warning, error)
-	- Description
+	- Line number(s) as a string in the field "number_of_row".
+	- A brief description of the issue in the field "issue".
+	- The severity level of the issue (high, medium, low) in the field "severity".
+	- Actionable advice to resolve the issue in the field "advice".
+
+	Return the result as a JSON array with objects following this schema:
 
 	Dockerfile:
 	%s`, cleanedBestPractices, content)
 
 	s.logger.Debugf("prompt: %s", prompt)
+
+	// Define the JSON schema for the response
+	schema := map[string]interface{}{
+		"type": "object",
+		"properties": map[string]interface{}{
+			"issues": map[string]interface{}{
+				"type": "array",
+				"items": map[string]interface{}{
+					"type": "object",
+					"properties": map[string]interface{}{
+						"number_of_row": map[string]string{"type": "string"},
+						"issue":         map[string]string{"type": "string"},
+						"severity":      map[string]string{"type": "string"},
+						"advice":        map[string]string{"type": "string"},
+					},
+					"required":             []string{"number_of_row", "issue", "severity", "advice"},
+					"additionalProperties": false,
+				},
+			},
+		},
+		"required":             []string{"issues"},
+		"additionalProperties": false,
+	}
+
+	// Serialize the schema into JSON
+	schemaBytes, err := json.Marshal(schema)
+	if err != nil {
+		s.logger.Errorf("Failed to serialize schema: %v", err)
+		return nil, fmt.Errorf("failed to serialize schema: %w", err)
+	}
+
+	// Define the response format
+	responseFormat := &openai.ChatCompletionResponseFormat{
+		Type: "json_schema",
+		JSONSchema: &openai.ChatCompletionResponseFormatJSONSchema{
+			Name:        "DockerfileLintIssues",
+			Description: "Linting issues for a Dockerfile",
+			Schema:      json.RawMessage(schemaBytes),
+			Strict:      true,
+		},
+	}
 
 	// Call OpenAI API
 	resp, err := s.client.CreateChatCompletion(ctx, openai.ChatCompletionRequest{
@@ -90,6 +136,7 @@ func (s *service) AnalyzeDockerFile(dockerfile string) (*LintResponse, error) {
 				Content: prompt,
 			},
 		},
+		ResponseFormat: responseFormat,
 	})
 	if err != nil {
 		s.logger.Errorf("Error communicating with OpenAI: %v", err)
@@ -100,7 +147,14 @@ func (s *service) AnalyzeDockerFile(dockerfile string) (*LintResponse, error) {
 	responseContent := resp.Choices[0].Message.Content
 	s.logger.Debugf("OpenAI response: %s", responseContent)
 
-	return &LintResponse{Content: responseContent}, nil
+	// Decode the JSON response into the LintResponse structure
+	var lintResponse LintResponse
+	if err := json.Unmarshal([]byte(responseContent), &lintResponse); err != nil {
+		s.logger.Errorf("Failed to parse JSON response: %v", err)
+		return nil, fmt.Errorf("invalid JSON format: %w", err)
+	}
+
+	return &lintResponse, nil
 }
 
 func (s *service) FetchBestPracticesMarkdown() (string, error) {
