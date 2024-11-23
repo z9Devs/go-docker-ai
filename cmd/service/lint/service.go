@@ -3,7 +3,6 @@ package lint
 import (
 	"context"
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/anaskhan96/soup"
@@ -67,12 +66,14 @@ func (s *service) AnalyzeDockerFile(dockerfile string) (*LintResponse, error) {
 	// Construct the prompt for OpenAI
 	prompt := fmt.Sprintf(`You are a Dockerfile linter. Use the following best practices as guidance:
 	%s
-
+	
 	Analyze the Dockerfile below. For each issue, provide:
 	- Line number(s)
 	- Severity (info, warning, error)
 	- Description
-
+	
+	Output the analysis in a tabular format using Markdown:
+	
 	Dockerfile:
 	%s`, cleanedBestPractices, content)
 
@@ -101,28 +102,7 @@ func (s *service) AnalyzeDockerFile(dockerfile string) (*LintResponse, error) {
 	responseContent := resp.Choices[0].Message.Content
 	s.logger.Debugf("OpenAI response: %s", responseContent)
 
-	lines := strings.Split(responseContent, "\n")
-	var issues []LintIssue
-	for _, line := range lines {
-		if strings.HasPrefix(line, "Line") {
-			parts := strings.Split(line, ":")
-			if len(parts) >= 3 {
-				// Extract line number, severity, and message
-				lineNumber, _ := strconv.Atoi(strings.TrimSpace(parts[1]))
-				severity := strings.TrimSpace(parts[2])
-				message := strings.Join(parts[3:], ":")
-				issues = append(issues, LintIssue{
-					LineNumber: lineNumber,
-					Severity:   severity,
-					Message:    message,
-				})
-			} else {
-				s.logger.Warnf("Failed to parse line: %s", line)
-			}
-		}
-	}
-
-	return &LintResponse{Issues: issues}, nil
+	return &LintResponse{content: responseContent}, nil
 }
 
 func (s *service) FetchBestPracticesMarkdown() (string, error) {

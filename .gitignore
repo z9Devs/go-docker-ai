@@ -24,6 +24,6 @@ go.work.sum
 # env file
 .env
 
+# Built execs
 GO-DockerLint-AI
-
 go-dockerlint-ai*
