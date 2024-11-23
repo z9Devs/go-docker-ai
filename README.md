@@ -72,9 +72,25 @@ Run the following command to analyze a Dockerfile:
 
 Example output:
 ```
-[INFO] Dockerfile analysis completed.
-[WARN] Use more recent base images.
-[SUGGESTION] Combine RUN commands to reduce image layers.
+{
+   issues": [
+          {
+                  "issue": "Using a large base image without necessity.",
+                  "severity": "high",
+                  "advice": "Consider using a leaner base image, such as `alpine` without glibc dependencies, to minimize the size and security risks."
+          },
+          {
+                  "issue": "Base image version is mutable and not pinned.",
+                  "severity": "medium",
+                  "advice": "It's advisable to pin the base image version using a specific digest instead of just `alpine-3.9_glibc-2.29` to avoid potential issues with future updates."
+          },
+          {
+                  "issue": "No explicit update before package installation.",
+                  "severity": "medium",
+                  "advice": "Run `apk update` before installing packages to ensure you're getting the latest available versions of packages."       
+          }
+   ]
+}                 
 ```
 
 ### Available Commands
