@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"github.com/la-plas-growth/GO-DockerLint-AI/cmd/command/lint"
+	"github.com/la-plas-growth/GO-DockerLint-AI/cmd/command/dockerfile"
 	"github.com/spf13/cobra"
 )
 
@@ -11,6 +12,7 @@ func NewRootCommand() *cobra.Command {
 		Short: "Tool is a CLI application for lint.",
 	}
 	rootCmd.AddCommand(lint.NewBaseCommand())
+	rootCmd.AddCommand(dockerfile.CreateDockerfileCommand())
 
 	return rootCmd
 }
