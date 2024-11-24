@@ -106,51 +106,8 @@ func (s *service) analyzeWithChatGPT(cleanedBestPractices, content string) (*Lin
 	s.logger.Debugf("prompt: %s", prompt)
 
 	// Define the JSON schema for the response
-	/*schema := map[string]interface{}{
-		"type": "object",
-		"properties": map[string]interface{}{
-			"issues": map[string]interface{}{
-				"type": "array",
-				"items": map[string]interface{}{
-					"type": "object",
-					"properties": map[string]interface{}{
-						"issue":    map[string]string{"type": "string"},
-						"severity": map[string]string{"type": "string"},
-						"advice":   map[string]string{"type": "string"},
-					},
-					"required":             []string{"issue", "severity", "advice"},
-					"additionalProperties": false,
-				},
-			},
-		},
-		"required":             []string{"issues"},
-		"additionalProperties": false,
-	}*/
-	schema := LinterChatGPTSchema{
-		Type: "object",
-		Properties: []SchemaProperties{{Issues: IssuesProperty{
-			Type: "array",
-			Items: IssuesItems{
-				Type: "object",
-				Properties: ItemProperties{
-					Issue: PropertyType{
-						Type: "string",
-					},
-					Severity: PropertyType{
-						Type: "string",
-					},
-					Advice: PropertyType{
-						Type: "string",
-					},
-				},
-				Required:             []string{"number_of_row", "issue", "severity", "advice"},
-				AdditionalProperties: false,
-			},
-		}}},
-		Required:             []string{"issues"},
-		AdditionalProperties: false,
-	}
-
+	schema := createSchemaGpt() 
+	
 	// Serialize the schema into JSON
 	schemaBytes, err := json.Marshal(schema)
 	if err != nil {
@@ -200,4 +157,28 @@ func (s *service) analyzeWithChatGPT(cleanedBestPractices, content string) (*Lin
 		return nil, fmt.Errorf("invalid JSON format: %w", err)
 	}
 	return &lintResponse, nil
+}
+
+
+func createSchemaGpt() map[string]interface{}{
+	return map[string]interface{}{
+		"type": "object",
+		"properties": map[string]interface{}{
+			"issues": map[string]interface{}{
+				"type": "array",
+				"items": map[string]interface{}{
+					"type": "object",
+					"properties": map[string]interface{}{
+						"issue":    map[string]string{"type": "string"},
+						"severity": map[string]string{"type": "string"},
+						"advice":   map[string]string{"type": "string"},
+					},
+					"required":             []string{"issue", "severity", "advice"},
+					"additionalProperties": false,
+				},
+			},
+		},
+		"required":             []string{"issues"},
+		"additionalProperties": false,
+	}
 }
