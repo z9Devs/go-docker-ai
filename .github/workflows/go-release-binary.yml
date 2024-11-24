@@ -28,7 +28,7 @@ jobs:
           sudo sh build.sh 
     #
     - name: Upload go-dockerlint-ai 
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       env:
         GITHUB_TOKEN: ${{ github.token }}
       with:
