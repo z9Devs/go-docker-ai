@@ -144,3 +144,4 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 For questions or issues, open an [issue](https://github.com/la-plas-growth/GO-DockerLint-AI/issues) or contact:
 
 - **Author**: [la-plas-growth](https://github.com/la-plas-growth)
+- **Author**: [Allan-Nava](https://github.com/Allan-Nava)
