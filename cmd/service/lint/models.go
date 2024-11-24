@@ -15,3 +15,46 @@ type LintResponse struct {
 type Dockerfile struct {
 	Content string
 }
+
+
+
+// Define the JSON schema for the response
+/*
+	schema := map[string]interface{}{
+		"type": "object",
+		"properties": map[string]interface{}{
+			"issues": map[string]interface{}{
+				"type": "array",
+				"items": map[string]interface{}{
+					"type": "object",
+					"properties": map[string]interface{}{
+						"number_of_row": map[string]string{"type": "string"},
+						"issue":         map[string]string{"type": "string"},
+						"severity":      map[string]string{"type": "string"},
+						"advice":        map[string]string{"type": "string"},
+					},
+					"required":             []string{"number_of_row", "issue", "severity", "advice"},
+					"additionalProperties": false,
+				},
+			},
+		},
+		"required":             []string{"issues"},
+		"additionalProperties": false,
+	}*/
+
+type LinterChatGPTSchema struct {
+	Type       string     `json:"type"`
+	Properties []Property `json:"properties"`
+}
+
+type Property struct {
+	Required             []string   `json:"required"`
+	AdditionalProperties bool       `json:"additionalProperties"`
+	Issues               []GPTIssue `json:"issues"`
+}
+
+type GPTIssue struct {
+	//map[string]string{"type": "string"},
+	NumberOfRow string `json:"number_of_row"`
+	Type string `json:"type"`
+}
