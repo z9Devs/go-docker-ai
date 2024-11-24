@@ -1,6 +1,10 @@
 package dockerfile
 
 import (
+	"context"
+	"encoding/json"
+	"fmt"
+
 	"github.com/la-plas-growth/GO-DockerLint-AI/env"
 	"github.com/sashabaranov/go-openai"
 	"go.uber.org/zap"
@@ -41,10 +45,9 @@ func (s *service) CreateDockerFile(lang string) (*DockerfileResponse, error) {
 		return nil, err
 	}
 	// create dockerfile in filesystem
-	
+
 	return resp, nil
 }
-
 
 func (s *service) getDockerfileWithChatGPT(lang string) (*DockerfileResponse, error) {
 	// Create OpenAI API context
@@ -54,8 +57,8 @@ func (s *service) getDockerfileWithChatGPT(lang string) (*DockerfileResponse, er
 	prompt := fmt.Sprintf(`Create a Dockerfile for this language: %s`, lang)
 	s.logger.Debugf("prompt: %s", prompt)
 	// Define the JSON schema for the response
-	schema := createSchemaGpt() 
-	
+	schema := createSchemaGpt()
+
 	// Serialize the schema into JSON
 	schemaBytes, err := json.Marshal(schema)
 	if err != nil {
@@ -96,17 +99,17 @@ func (s *service) getDockerfileWithChatGPT(lang string) (*DockerfileResponse, er
 	// Parse the response
 	responseContent := resp.Choices[0].Message.Content
 	s.logger.Debugf("OpenAI response: %s", responseContent)
-	
+
 	// Decode the JSON response into the DockerfileResponse structure
-	var resp DockerfileResponse
-	if err := json.Unmarshal([]byte(responseContent), &resp); err != nil {
+	var respDockerfile DockerfileResponse
+	if err := json.Unmarshal([]byte(responseContent), &respDockerfile); err != nil {
 		s.logger.Errorf("Failed to parse JSON response: %v", err)
 		return nil, fmt.Errorf("invalid JSON format: %w", err)
 	}
-	return &resp, nil
+	return &respDockerfile, nil
 }
 
-func createSchemaGpt() map[string]interface{}{
+func createSchemaGpt() map[string]interface{} {
 	return map[string]interface{}{
 		"type": "object",
 		"properties": map[string]interface{}{
