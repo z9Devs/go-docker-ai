@@ -67,21 +67,37 @@ sh build.sh
 Run the following command to analyze a Dockerfile:
 
 ```bash
-./go-dockerlint-ai-linux-amd64 lint /path/to/Dockerfile
+./go-dockerlint-ai-linux-amd64 dockerlint /path/to/Dockerfile
 ```
 
 Example output:
 ```
-[INFO] Dockerfile analysis completed.
-[WARN] Use more recent base images.
-[SUGGESTION] Combine RUN commands to reduce image layers.
+{
+   issues": [
+          {
+                  "issue": "Using a large base image without necessity.",
+                  "severity": "high",
+                  "advice": "Consider using a leaner base image, such as `alpine` without glibc dependencies, to minimize the size and security risks."
+          },
+          {
+                  "issue": "Base image version is mutable and not pinned.",
+                  "severity": "medium",
+                  "advice": "It's advisable to pin the base image version using a specific digest instead of just `alpine-3.9_glibc-2.29` to avoid potential issues with future updates."
+          },
+          {
+                  "issue": "No explicit update before package installation.",
+                  "severity": "medium",
+                  "advice": "Run `apk update` before installing packages to ensure you're getting the latest available versions of packages."       
+          }
+   ]
+}                 
 ```
 
 ### Available Commands
 
 | Command             | Description                               |
 |---------------------|-------------------------------------------|
-| `lint <file>`       | Lint the specified Dockerfile.            |
+| `dockerlint <file>`       | Lint the specified Dockerfile.            |
 | `version`           | Show the tool version.                   |
 | `help`              | Display available commands.              |
 
@@ -101,7 +117,7 @@ If you want to contribute or customize the project, make sure you have Go instal
 
 3. Start the tool:
    ```bash
-   go run main.go lint /path/to/Dockerfile
+   go run main.go dockerlint /path/to/Dockerfile
    ```
 
 ## Contributing

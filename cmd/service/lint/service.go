@@ -89,17 +89,17 @@ func (s *service) analyzeWithChatGPT(cleanedBestPractices, content string) (*Lin
 	ctx := context.Background()
 
 	// Construct the prompt for OpenAI
-	prompt := fmt.Sprintf(`You are a Dockerfile linter. Use the following best practices as guidance:
+	prompt := fmt.Sprintf(`You are a Dockerfile linter. Use only the best practices provided as guidance:
 	%s
-
+	
 	Analyze the Dockerfile below. For each issue, provide:
-	- Line number(s) as a string in the field "number_of_row".
 	- A brief description of the issue in the field "issue".
 	- The severity level of the issue (high, medium, low) in the field "severity".
 	- Actionable advice to resolve the issue in the field "advice".
-
-	Return the result as a JSON array with objects following this schema:
-
+	
+	Base your analysis strictly and exclusively on the provided best practices and the content of the Dockerfile below.  
+	DO NOT include any suggestions or comments about .dockerignore, as you cannot know if the user has used it.
+	
 	Dockerfile:
 	%s`, cleanedBestPractices, content)
 
@@ -114,12 +114,11 @@ func (s *service) analyzeWithChatGPT(cleanedBestPractices, content string) (*Lin
 				"items": map[string]interface{}{
 					"type": "object",
 					"properties": map[string]interface{}{
-						"number_of_row": map[string]string{"type": "string"},
-						"issue":         map[string]string{"type": "string"},
-						"severity":      map[string]string{"type": "string"},
-						"advice":        map[string]string{"type": "string"},
+						"issue":    map[string]string{"type": "string"},
+						"severity": map[string]string{"type": "string"},
+						"advice":   map[string]string{"type": "string"},
 					},
-					"required":             []string{"number_of_row", "issue", "severity", "advice"},
+					"required":             []string{"issue", "severity", "advice"},
 					"additionalProperties": false,
 				},
 			},
