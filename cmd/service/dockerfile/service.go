@@ -1,14 +1,7 @@
 package dockerfile
 
 import (
-	"context"
-	"encoding/json"
-	"fmt"
-	"strings"
-
-	"github.com/anaskhan96/soup"
 	"github.com/la-plas-growth/GO-DockerLint-AI/env"
-	"github.com/la-plas-growth/GO-DockerLint-AI/lib"
 	"github.com/sashabaranov/go-openai"
 	"go.uber.org/zap"
 )
@@ -40,6 +33,6 @@ func NewService(configuration *env.Configuration, logger *zap.SugaredLogger) ISe
 
 // Create the finale Dockerfile
 func (s *service) CreateDockerFile(lang string) (*DockerfileResponse, error) {
-    // TODO
-    return nil, nil
+	// TODO
+	return nil, nil
 }

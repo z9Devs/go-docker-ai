@@ -5,8 +5,8 @@ package wire
 
 import (
 	"github.com/google/wire"
-	"github.com/la-plas-growth/GO-DockerLint-AI/cmd/service/lint"
 	"github.com/la-plas-growth/GO-DockerLint-AI/cmd/service/dockerfile"
+	"github.com/la-plas-growth/GO-DockerLint-AI/cmd/service/lint"
 	"github.com/la-plas-growth/GO-DockerLint-AI/env"
 	zap_log "github.com/la-plas-growth/GO-DockerLint-AI/lib/log"
 )
@@ -24,7 +24,6 @@ func InitLint() lint.IService {
 	)
 	return nil
 }
-
 
 // add all commands
 func InitDockerfileService() dockerfile.IService {
