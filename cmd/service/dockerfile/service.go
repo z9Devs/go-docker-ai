@@ -6,8 +6,8 @@ import (
 	"fmt"
 
 	"github.com/la-plas-growth/GO-DockerLint-AI/env"
-	"github.com/sashabaranov/go-openai"
 	"github.com/la-plas-growth/GO-DockerLint-AI/lib"
+	"github.com/sashabaranov/go-openai"
 	"go.uber.org/zap"
 )
 
@@ -46,7 +46,7 @@ func (s *service) CreateDockerFile(lang string) (*DockerfileResponse, error) {
 		return nil, err
 	}
 	// create dockerfile in filesystem
-	err := lib.WriteFile("Dockerfile", resp)
+	err = lib.WriteFile("Dockerfile", resp.Dockerfile)
 	if err != nil {
 		s.logger.Errorf("Failed to WriteFile: %v", err)
 		return nil, err
