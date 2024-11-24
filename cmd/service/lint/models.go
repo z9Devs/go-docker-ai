@@ -43,10 +43,10 @@ type Dockerfile struct {
 	}*/
 
 type LinterChatGPTSchema struct {
-	Type       				string     `json:"type"`
-	Properties 				[]Property `json:"properties"`
-	Required             	[]string          `json:"required"`
-	AdditionalProperties 	bool              `json:"additionalProperties"`
+	Type       				string     			`json:"type"`
+	Properties 				[]SchemaProperties 	`json:"properties"`
+	Required             	[]string          	`json:"required"`
+	AdditionalProperties 	bool              	`json:"additionalProperties"`
 }
 
 type SchemaProperties struct {

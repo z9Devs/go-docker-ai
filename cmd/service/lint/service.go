@@ -106,7 +106,7 @@ func (s *service) analyzeWithChatGPT(cleanedBestPractices, content string) (*Lin
 	s.logger.Debugf("prompt: %s", prompt)
 
 	// Define the JSON schema for the response
-	schema := map[string]interface{}{
+	/*schema := map[string]interface{}{
 		"type": "object",
 		"properties": map[string]interface{}{
 			"issues": map[string]interface{}{
@@ -125,6 +125,33 @@ func (s *service) analyzeWithChatGPT(cleanedBestPractices, content string) (*Lin
 		},
 		"required":             []string{"issues"},
 		"additionalProperties": false,
+	}*/
+	schema := LinterChatGPTSchema{
+		Type: "object",
+		Properties: []SchemaProperties{{Issues: IssuesProperty{
+			Type: "array",
+			Items: IssuesItems{
+				Type: "object",
+				Properties: ItemProperties{
+					NumberOfRow: PropertyType{
+						Type: "string",
+					},
+					Issue: PropertyType{
+						Type: "string",
+					},
+					Severity: PropertyType{
+						Type: "string",
+					},
+					Advice: PropertyType{
+						Type: "string",
+					},
+				},
+				Required:             []string{"number_of_row", "issue", "severity", "advice"},
+				AdditionalProperties: false,
+			},
+		}}},
+		Required:             []string{"issues"},
+		AdditionalProperties: false,
 	}
 
 	// Serialize the schema into JSON
