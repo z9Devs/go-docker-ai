@@ -133,9 +133,6 @@ func (s *service) analyzeWithChatGPT(cleanedBestPractices, content string) (*Lin
 			Items: IssuesItems{
 				Type: "object",
 				Properties: ItemProperties{
-					NumberOfRow: PropertyType{
-						Type: "string",
-					},
 					Issue: PropertyType{
 						Type: "string",
 					},

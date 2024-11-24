@@ -28,7 +28,7 @@ type Dockerfile struct {
 				"items": map[string]interface{}{
 					"type": "object",
 					"properties": map[string]interface{}{
-						"number_of_row": map[string]string{"type": "string"},
+						//"number_of_row": map[string]string{"type": "string"},
 						"issue":         map[string]string{"type": "string"},
 						"severity":      map[string]string{"type": "string"},
 						"advice":        map[string]string{"type": "string"},
@@ -66,7 +66,7 @@ type IssuesItems struct {
 }
 
 type ItemProperties struct {
-	NumberOfRow PropertyType `json:"number_of_row"`
+	//NumberOfRow PropertyType `json:"number_of_row"`
 	Issue       PropertyType `json:"issue"`
 	Severity    PropertyType `json:"severity"`
 	Advice      PropertyType `json:"advice"`
