@@ -7,6 +7,7 @@ import (
 
 	"github.com/la-plas-growth/GO-DockerLint-AI/env"
 	"github.com/sashabaranov/go-openai"
+	"github.com/la-plas-growth/GO-DockerLint-AI/lib"
 	"go.uber.org/zap"
 )
 
@@ -41,11 +42,15 @@ func (s *service) CreateDockerFile(lang string) (*DockerfileResponse, error) {
 	//
 	resp, err := s.getDockerfileWithChatGPT(lang)
 	if err != nil {
-		s.logger.Errorf("Failed to analyzeWithChatGPT: %v", err)
+		s.logger.Errorf("Failed to getDockerfileWithChatGPT: %v", err)
 		return nil, err
 	}
 	// create dockerfile in filesystem
-
+	err := lib.WriteFile("Dockerfile", resp)
+	if err != nil {
+		s.logger.Errorf("Failed to WriteFile: %v", err)
+		return nil, err
+	}
 	return resp, nil
 }
 

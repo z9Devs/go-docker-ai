@@ -25,3 +25,15 @@ func GetFileContent(filePath string) (string, error) {
 
 	return content, nil
 }
+
+
+func WriteFile(filename string, content string) error {
+	file, err := os.OpenFile(filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	_, err = file.WriteString(content)
+	return err
+}
