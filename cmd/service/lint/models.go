@@ -28,7 +28,7 @@ type Dockerfile struct {
 				"items": map[string]interface{}{
 					"type": "object",
 					"properties": map[string]interface{}{
-						"number_of_row": map[string]string{"type": "string"},
+						//"number_of_row": map[string]string{"type": "string"},
 						"issue":         map[string]string{"type": "string"},
 						"severity":      map[string]string{"type": "string"},
 						"advice":        map[string]string{"type": "string"},
@@ -43,18 +43,35 @@ type Dockerfile struct {
 	}*/
 
 type LinterChatGPTSchema struct {
-	Type       string     `json:"type"`
-	Properties []Property `json:"properties"`
+	Type       				string     			`json:"type"`
+	Properties 				[]SchemaProperties 	`json:"properties"`
+	Required             	[]string          	`json:"required"`
+	AdditionalProperties 	bool              	`json:"additionalProperties"`
 }
 
-type Property struct {
-	Required             []string   `json:"required"`
-	AdditionalProperties bool       `json:"additionalProperties"`
-	Issues               []GPTIssue `json:"issues"`
+type SchemaProperties struct {
+	Issues IssuesProperty `json:"issues"`
 }
 
-type GPTIssue struct {
-	//map[string]string{"type": "string"},
-	NumberOfRow string `json:"number_of_row"`
+type IssuesProperty struct {
+	Type  string          `json:"type"`
+	Items IssuesItems     `json:"items"`
+}
+
+type IssuesItems struct {
+	Type                 string           `json:"type"`
+	Properties           ItemProperties   `json:"properties"`
+	Required             []string         `json:"required"`
+	AdditionalProperties bool             `json:"additionalProperties"`
+}
+
+type ItemProperties struct {
+	//NumberOfRow PropertyType `json:"number_of_row"`
+	Issue       PropertyType `json:"issue"`
+	Severity    PropertyType `json:"severity"`
+	Advice      PropertyType `json:"advice"`
+}
+
+type PropertyType struct {
 	Type string `json:"type"`
 }
