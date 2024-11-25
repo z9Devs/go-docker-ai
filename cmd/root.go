@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"github.com/la-plas-growth/GO-DockerLint-AI/cmd/command/dockerfile"
-	"github.com/la-plas-growth/GO-DockerLint-AI/cmd/command/lint"
+	"github.com/la-plas-growth/go-docker-ai/cmd/command/dockerfile"
+	"github.com/la-plas-growth/go-docker-ai/cmd/command/lint"
 	"github.com/spf13/cobra"
 )
 

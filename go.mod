@@ -1,4 +1,4 @@
-module github.com/la-plas-growth/GO-DockerLint-AI
+module github.com/la-plas-growth/go-docker-ai
 
 go 1.23.1
 

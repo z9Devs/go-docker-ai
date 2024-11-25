@@ -1,6 +1,6 @@
-# GO-DockerLint-AI
+# GO-Docker-AI
 
-**GO-DockerLint-AI** is a tool written in Go designed to analyze and lint Dockerfiles, providing suggestions and corrections to improve the quality and efficiency of Docker images.
+**GO-Docker-AI** is a tool written in Go designed to analyze and lint Dockerfiles, providing suggestions and corrections to improve the quality and efficiency of Docker images.
 
 ## Features
 
@@ -35,20 +35,20 @@ Make sure to replace `your_openai_key` with your actual OpenAI API key.
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/la-plas-growth/GO-DockerLint-AI.git
-cd GO-DockerLint-AI
+git clone https://github.com/la-plas-growth/GO-Docker-AI.git
+cd GO-Docker-AI
 ```
 
 ### Build
 
 #### For Linux (amd64):
 ```bash
-CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -a -o go-dockerlint-ai-linux-amd64 .
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -a -o go-Docker-ai-linux-amd64 .
 ```
 
 #### For Windows (amd64):
 ```bash
-CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -a -o go-dockerlint-ai-windows-amd64 .
+CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -a -o go-Docker-ai-windows-amd64 .
 ```
 
 You can also use the `build.sh` script to generate binaries for all supported platforms:
@@ -59,7 +59,7 @@ sh build.sh
 
 ### Using the Binary
 
-1. Download the precompiled binary from the [releases](https://github.com/la-plas-growth/GO-DockerLint-AI/releases) section.
+1. Download the precompiled binary from the [releases](https://github.com/la-plas-growth/GO-Docker-AI/releases) section.
 2. Add the binary to your `$PATH` or execute it directly.
 
 ## Usage
@@ -67,7 +67,7 @@ sh build.sh
 Run the following command to analyze a Dockerfile:
 
 ```bash
-./go-dockerlint-ai-linux-amd64 dockerlint /path/to/Dockerfile
+./go-Docker-ai-linux-amd64 Docker /path/to/Dockerfile
 ```
 
 Example output:
@@ -141,7 +141,7 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 
 ## Contact
 
-For questions or issues, open an [issue](https://github.com/la-plas-growth/GO-DockerLint-AI/issues) or contact:
+For questions or issues, open an [issue](https://github.com/la-plas-growth/GO-Docker-AI/issues) or contact:
 
 - **Author**: [la-plas-growth](https://github.com/la-plas-growth)
 - **Author**: [Allan-Nava](https://github.com/Allan-Nava)

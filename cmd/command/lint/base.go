@@ -1,8 +1,8 @@
 package lint
 
 import (
-	wire "github.com/la-plas-growth/GO-DockerLint-AI/deps"
-	"github.com/la-plas-growth/GO-DockerLint-AI/lib"
+	wire "github.com/la-plas-growth/go-docker-ai/deps"
+	"github.com/la-plas-growth/go-docker-ai/lib"
 	"github.com/spf13/cobra"
 )
 

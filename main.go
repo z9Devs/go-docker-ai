@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/la-plas-growth/GO-DockerLint-AI/cmd"
+	"github.com/la-plas-growth/go-docker-ai/cmd"
 )
 
 func main() {
