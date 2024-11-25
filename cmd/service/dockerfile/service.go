@@ -121,8 +121,7 @@ func createSchemaGpt() map[string]interface{} {
 			"dockerfile": map[string]interface{}{
 				"type": "object",
 				"properties": map[string]interface{}{
-					"dockerfile":  map[string]string{"type": "string"},
-					},
+					"dockerfile": map[string]string{"type": "string"},
 				},
 			},
 		},
