@@ -6,7 +6,7 @@
 
 - Static analysis of Dockerfiles.
 - Suggestions for optimization and fixing common mistakes.
-- Multi-platform support (Linux, Windows, ARM, and x86_64).
+- NOT YET: Multi-platform support, FOR NOW WE ONLY SUPPORT "linux amd64"
 - No external dependencies: standalone binary.
 - Integration with OpenAI for advanced suggestions.
 
@@ -15,8 +15,8 @@
 - **Go** 1.20 or later.
 - Operating System:
   - Linux
-  - Windows ( experimental compatibility)
-  - macOS (experimental compatibility)
+  - NOT YET: Windows
+  - NOT YET: macOS
 - Docker (optional for testing).
 - OpenAI API Key (required for functionality).
 
@@ -35,18 +35,18 @@ Make sure to replace `your_openai_key` with your actual OpenAI API key.
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/la-plas-growth/GO-Docker-AI.git
-cd GO-Docker-AI
+git clone https://github.com/la-plas-growth/go-docker-ai.git
+cd go-docker-ai
 ```
 
 ### Build
 
 #### For Linux (amd64):
 ```bash
-CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -a -o go-Docker-ai-linux-amd64 .
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -a -o go-docker-ai-linux-amd64 .
 ```
 
-#### For Windows (amd64):
+#### For Windows (amd64) - NOT TESTED YET:
 ```bash
 CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -a -o go-Docker-ai-windows-amd64 .
 ```
@@ -59,7 +59,7 @@ sh build.sh
 
 ### Using the Binary
 
-1. Download the precompiled binary from the [releases](https://github.com/la-plas-growth/GO-Docker-AI/releases) section.
+1. Download the precompiled binary from the [releases](https://github.com/la-plas-growth/go-docker-ai/releases) section.
 2. Add the binary to your `$PATH` or execute it directly.
 
 ## Usage
@@ -67,7 +67,7 @@ sh build.sh
 Run the following command to analyze a Dockerfile:
 
 ```bash
-./go-Docker-ai-linux-amd64 Docker /path/to/Dockerfile
+./go-docker-ai-linux-amd64 dockerlint /path/to/Dockerfile
 ```
 
 Example output:
