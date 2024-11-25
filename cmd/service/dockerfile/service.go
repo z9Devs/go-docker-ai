@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/la-plas-growth/GO-DockerLint-AI/env"
-	"github.com/la-plas-growth/GO-DockerLint-AI/lib"
+	"github.com/la-plas-growth/go-docker-ai/env"
+	"github.com/la-plas-growth/go-docker-ai/lib"
 	"github.com/sashabaranov/go-openai"
 	"go.uber.org/zap"
 )

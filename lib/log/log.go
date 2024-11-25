@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	"github.com/la-plas-growth/GO-DockerLint-AI/env"
+	"github.com/la-plas-growth/go-docker-ai/env"
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/buffer"
