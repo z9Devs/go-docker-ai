@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"path/filepath"
 	"strings"
 
 	"github.com/anaskhan96/soup"
@@ -15,7 +16,7 @@ import (
 
 // IService defines the interface for the dockerfile service
 type IService interface {
-	CreateDockerFile(lang string) (*DockerfileResponse, error)
+	CreateDockerFile(lang, path string) (*DockerfileResponse, error)
 }
 
 // service implements the IService interface
@@ -53,16 +54,17 @@ func (s *service) FetchBestPracticesMarkdown() (string, error) {
 }
 
 // Create the finale Dockerfile
-func (s *service) CreateDockerFile(lang string) (*DockerfileResponse, error) {
-	s.logger.Debugf("Create DockerFile with OpenAI for lang: %s", lang)
+func (s *service) CreateDockerFile(lang, path string) (*DockerfileResponse, error) {
+	s.logger.Debugf("Create DockerFile with OpenAI for lang: %s path: %s", lang, path)
 	//
 	resp, err := s.getDockerfileWithChatGPT(lang)
 	if err != nil {
 		s.logger.Errorf("Failed to getDockerfileWithChatGPT: %v", err)
 		return nil, err
 	}
+	dockerfilePath := filepath.Join(path, "Dockerfile")
 	// create dockerfile in filesystem
-	err = lib.WriteFile("Dockerfile", resp.Dockerfile)
+	err = lib.WriteFile(dockerfilePath, resp.Dockerfile)
 	if err != nil {
 		s.logger.Errorf("Failed to WriteFile: %v", err)
 		return nil, err

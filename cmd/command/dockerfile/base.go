@@ -7,13 +7,13 @@ import (
 )
 
 func CreateDockerfileCommand() *cobra.Command {
-	var lang string
+	var lang, path string
 	cmd := cobra.Command{
 		Use:   "dockerfile",
 		Short: "Create Dockerfile by language/type",
 		Run: func(cmd *cobra.Command, args []string) {
 			dockerFileService := wire.InitDockerfileService()
-			r, err := dockerFileService.CreateDockerFile(lang)
+			r, err := dockerFileService.CreateDockerFile(lang, path)
 			if err != nil {
 				cmd.PrintErr("Error: ", err)
 				return
@@ -23,6 +23,7 @@ func CreateDockerfileCommand() *cobra.Command {
 	}
 
 	cmd.Flags().StringVarP(&lang, "type", "t", "golang", "Create dockerfile language/type")
+	cmd.Flags().StringVarP(&lang, "path", "p", "./", "Path for the dockerfile")
 
 	_ = cmd.MarkFlagRequired("type")
 
