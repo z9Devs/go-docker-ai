@@ -10,6 +10,10 @@
 - No external dependencies: standalone binary.
 - Integration with OpenAI for advanced suggestions.
 
+## New features v0.2.0
+- Creation of base Dockerfile based on best practices.
+  
+
 ## System Requirements
 
 - **Go** 1.20 or later.
@@ -93,13 +97,22 @@ Example output:
 }                 
 ```
 
+Run the followinf command to create a base Dockerfile:
+
+```bash
+./go-docker-ai-linux-amd64 dockerfile -t golang
+```
+
+Output: the file will be created in the folder where the command is been executed
+
 ### Available Commands
 
-| Command             | Description                               |
-|---------------------|-------------------------------------------|
-| `dockerlint <file>`       | Lint the specified Dockerfile.            |
-| `version`           | Show the tool version.                   |
-| `help`              | Display available commands.              |
+| Command               | Description                               |
+|---------------------  |-------------------------------------------|
+| `Dockerfile -t <lang>`| Create a base dockerfile in any language  |
+| `dockerlint <file>`   | Lint the specified Dockerfile.            |
+| `version`             | Show the tool version.                    |
+| `help`                | Display available commands.               |
 
 ## Development
 
@@ -117,7 +130,7 @@ If you want to contribute or customize the project, make sure you have Go instal
 
 3. Start the tool:
    ```bash
-   go run main.go dockerlint /path/to/Dockerfile
+   go run main.go <command> <arg>
    ```
 
 ## Contributing
