@@ -13,7 +13,7 @@ func CreateDockerfileCommand() *cobra.Command {
 		Short: "Create Dockerfile by language/type",
 		Run: func(cmd *cobra.Command, args []string) {
 			dockerFileService := wire.InitDockerfileService()
-			r, err := dockerFileService.CreateDockerFile(lang)
+			r, err := dockerFileService.CreateDockerFile(lang, path)
 			if err != nil {
 				cmd.PrintErr("Error: ", err)
 				return
