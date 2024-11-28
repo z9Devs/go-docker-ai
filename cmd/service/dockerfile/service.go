@@ -74,9 +74,7 @@ func (s *service) getDockerfileWithChatGPT(lang string) (*DockerfileResponse, er
 	// Create OpenAI API context
 	ctx := context.Background()
 
-	// Construct the prompt for OpenAI
-	prompt := fmt.Sprintf(`Create a Dockerfile for this language: %s`, lang)
-	s.logger.Debugf("prompt: %s", prompt)
+	prompt := fmt.Sprintf(`Write only the Dockerfile content for the language: %s. Do not include any explanations, comments, or additional text.`, lang)
 
 	// Fetch best practices content
 	bestPractices, err := s.FetchBestPracticesMarkdown()
@@ -89,6 +87,7 @@ func (s *service) getDockerfileWithChatGPT(lang string) (*DockerfileResponse, er
 
 	// Construct the system prompt
 	sysprompt := fmt.Sprintf(`You are an expert Dockerfile creator who strictly adheres to the following best practices: %s`, cleanedBestPractices)
+	s.logger.Debugf("sysprompt: %s", sysprompt)
 
 	// Define the JSON schema for the response
 	schema := createSchemaGpt()
