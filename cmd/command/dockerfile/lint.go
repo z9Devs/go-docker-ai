@@ -1,4 +1,4 @@
-package lint
+package dockerfile
 
 import (
 	wire "github.com/la-plas-growth/go-docker-ai/deps"
