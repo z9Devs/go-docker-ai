@@ -7,7 +7,7 @@ import (
 )
 
 func CreateDockerfileCommand() *cobra.Command {
-	var lang string
+	var lang, path string
 	cmd := cobra.Command{
 		Use:   "dockerfile",
 		Short: "Create Dockerfile by language/type",
@@ -23,6 +23,7 @@ func CreateDockerfileCommand() *cobra.Command {
 	}
 
 	cmd.Flags().StringVarP(&lang, "type", "t", "golang", "Create dockerfile language/type")
+	cmd.Flags().StringVarP(&lang, "path", "p", "./", "Path for the dockerfile")
 
 	_ = cmd.MarkFlagRequired("type")
 
