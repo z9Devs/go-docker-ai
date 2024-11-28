@@ -8,10 +8,10 @@ package wire
 
 import (
 	"github.com/google/wire"
-	"github.com/la-plas-growth/GO-DockerLint-AI/cmd/service/dockerfile"
-	"github.com/la-plas-growth/GO-DockerLint-AI/cmd/service/lint"
-	"github.com/la-plas-growth/GO-DockerLint-AI/env"
-	"github.com/la-plas-growth/GO-DockerLint-AI/lib/log"
+	"github.com/la-plas-growth/go-docker-ai/cmd/service/dockerfile"
+	"github.com/la-plas-growth/go-docker-ai/cmd/service/lint"
+	"github.com/la-plas-growth/go-docker-ai/env"
+	"github.com/la-plas-growth/go-docker-ai/lib/log"
 )
 
 // Injectors from wire.go:

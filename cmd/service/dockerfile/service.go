@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	"github.com/anaskhan96/soup"
-	"github.com/la-plas-growth/GO-DockerLint-AI/env"
-	"github.com/la-plas-growth/GO-DockerLint-AI/lib"
+	"github.com/la-plas-growth/go-docker-ai/env"
+	"github.com/la-plas-growth/go-docker-ai/lib"
 	"github.com/sashabaranov/go-openai"
 	"go.uber.org/zap"
 )
@@ -146,21 +146,9 @@ func createSchemaGpt() map[string]interface{} {
 	return map[string]interface{}{
 		"type": "object",
 		"properties": map[string]interface{}{
-			"issues": map[string]interface{}{
-				"type": "array",
-				"items": map[string]interface{}{
-					"type": "object",
-					"properties": map[string]interface{}{
-						"issue":    map[string]string{"type": "string"},
-						"severity": map[string]string{"type": "string"},
-						"advice":   map[string]string{"type": "string"},
-					},
-					"required":             []string{"issue", "severity", "advice"},
-					"additionalProperties": false,
-				},
-			},
+			"dockerfile": map[string]string{"type": "string"},
 		},
-		"required":             []string{"issues"},
+		"required":             []string{"dockerfile"},
 		"additionalProperties": false,
 	}
 }

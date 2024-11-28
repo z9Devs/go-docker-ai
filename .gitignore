@@ -27,3 +27,4 @@ go.work.sum
 # Built execs
 GO-DockerLint-AI
 go-dockerlint-ai*
+go-docker-ai-linux-amd64
