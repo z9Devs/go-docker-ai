@@ -71,7 +71,7 @@ sh build.sh
 Run the following command to analyze a Dockerfile:
 
 ```bash
-./go-docker-ai-linux-amd64 dockerlint /path/to/Dockerfile
+./go-docker-ai-linux-amd64 dockerfile lint -f /path/to/Dockerfile
 ```
 
 Example output:
@@ -100,7 +100,7 @@ Example output:
 Run the followinf command to create a base Dockerfile:
 
 ```bash
-./go-docker-ai-linux-amd64 dockerfile -t golang
+./go-docker-ai-linux-amd64 dockerfile create -t golang
 ```
 
 Output: the file will be created in the folder where the command is been executed
@@ -109,8 +109,8 @@ Output: the file will be created in the folder where the command is been execute
 
 | Command               | Description                               |
 |---------------------  |-------------------------------------------|
-| `Dockerfile -t <lang>`| Create a base dockerfile in any language  |
-| `dockerlint <file>`   | Lint the specified Dockerfile.            |
+| `dockerfile create -t <lang> -p <path>`| Create a base dockerfile in any language  |
+| `dockerifle lint -f <file>`   | Lint the specified Dockerfile.            |
 | `version`             | Show the tool version.                    |
 | `help`                | Display available commands.               |
 
