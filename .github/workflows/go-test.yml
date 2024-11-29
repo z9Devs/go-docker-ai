@@ -33,6 +33,13 @@ jobs:
       - name: Build
         run: go build -v ./... 
       #
+      - name: Check env.OPENAI_API_KEY
+        run: |
+            if [ -z "$OPENAI_API_KEY" ]; then
+                echo "La variabile OPENAI_API_KEY non è impostata o è vuota."
+                exit 0;
+            fi
+      
       - name: Test with the Go CLI
         run: go test -v ./...
       #
