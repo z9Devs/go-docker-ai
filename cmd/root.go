@@ -12,6 +12,7 @@ func NewRootCommand() *cobra.Command {
 	}
 	//
 	rootCmd.AddCommand(dockerfile.NewBaseCommand())
+	//rootCmd.AddCommand(project.NewBaseCommand())
 	//
 	return rootCmd
 }

@@ -50,6 +50,11 @@ cd go-docker-ai
 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -a -o go-docker-ai-linux-amd64 .
 ```
 
+#### For Linux (arm64):
+```bash
+CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -ldflags="-s -w" -a -o go-docker-ai-linux-arm64 .
+```
+
 #### For Windows (amd64) - NOT TESTED YET:
 ```bash
 CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -a -o go-Docker-ai-windows-amd64 .
@@ -71,7 +76,7 @@ sh build.sh
 Run the following command to analyze a Dockerfile:
 
 ```bash
-./go-docker-ai-linux-amd64 dockerlint /path/to/Dockerfile
+./go-docker-ai-linux-amd64 dockerfile lint -f /path/to/Dockerfile
 ```
 
 Example output:
@@ -100,7 +105,7 @@ Example output:
 Run the followinf command to create a base Dockerfile:
 
 ```bash
-./go-docker-ai-linux-amd64 dockerfile -t golang
+./go-docker-ai-linux-amd64 dockerfile create -t golang
 ```
 
 Output: the file will be created in the folder where the command is been executed
@@ -109,8 +114,8 @@ Output: the file will be created in the folder where the command is been execute
 
 | Command               | Description                               |
 |---------------------  |-------------------------------------------|
-| `Dockerfile -t <lang>`| Create a base dockerfile in any language  |
-| `dockerlint <file>`   | Lint the specified Dockerfile.            |
+| `dockerfile create -t <lang> -p <path>`| Create a base dockerfile in any language  |
+| `dockerifle lint -f <file>`   | Lint the specified Dockerfile.            |
 | `version`             | Show the tool version.                    |
 | `help`                | Display available commands.               |
 
