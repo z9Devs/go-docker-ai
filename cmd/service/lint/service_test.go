@@ -1,4 +1,4 @@
-package dockerfile_test
+package lint_test
 
 import (
 	"testing"
@@ -8,10 +8,9 @@ import (
 )
 
 func TestCreateDockerfile(t *testing.T) {
-	lang := "golang"
-	path := "./"
-	dockerFileService := wire.InitDockerfileService()
-	r, err := dockerFileService.CreateDockerFile(lang, path)
+	f := "Dockerfile"
+	dockerFileService := wire.()
+	r, err := dockerFileService.AnalyzeDockerFile(f)
 	if err != nil {
 		t.Errorf("Error: %v", err)
 		return
