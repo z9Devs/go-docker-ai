@@ -9,7 +9,7 @@ import (
 
 func TestCreateDockerfile(t *testing.T) {
 	f := "Dockerfile"
-	dockerFileService := wire.()
+	dockerFileService := wire.InitLint()
 	r, err := dockerFileService.AnalyzeDockerFile(f)
 	if err != nil {
 		t.Errorf("Error: %v", err)
