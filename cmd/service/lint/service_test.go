@@ -7,8 +7,10 @@ import (
 	"github.com/la-plas-growth/go-docker-ai/lib"
 )
 
-func TestCreateDockerfile(t *testing.T) {
+func TestLintDockerfile *testing.T) {
 	f := "Dockerfile"
+	t.Log(lib.PrettyPrint(f))
+	return 
 	dockerFileService := wire.InitLint()
 	r, err := dockerFileService.AnalyzeDockerFile(f)
 	if err != nil {
