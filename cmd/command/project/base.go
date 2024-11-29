@@ -8,5 +8,7 @@ func NewBaseCommand() *cobra.Command {
 		Short: "Project related commands",
 	}
 
+	cmd.AddCommand(CreateProjectCommand())
+
 	return cmd
 }
